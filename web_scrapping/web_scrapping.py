@@ -36,6 +36,7 @@ with open("web_scrapping/bse.html", "w") as f:
         result['Quantity'].append(cells[5].text)
         result['Price'].append(cells[6].text)
 
+# create a dataframe to store data and then pushhing it to the daily_run_data table
 df = pd.DataFrame.from_dict(result)
 
 
