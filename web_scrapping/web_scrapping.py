@@ -19,22 +19,21 @@ req_headers = {
 result = {'Deal_Date': [], 'Security_Code': [], 'Security_Name': [], 'Client_Name': [], 'Deal_Type': [], 'Quantity': [],
           'Price': []}
 res = requests.get("https://www.bseindia.com/markets/equity/EQReports/bulk_deals.aspx", headers=req_headers)
-with open("web_scrapping/bse.html", "w") as f:
-    f.write(res.text)
-    soup = BeautifulSoup(res.text, 'html.parser')
-    table = soup.find('table', {'id': 'ContentPlaceHolder1_gvbulk_deals'})
-    rows = table.find_all('tr')[1:]
 
-    # Iterate over each row and extract the data
-    for row in rows:
-        cells = row.find_all('td')
-        result['Deal_Date'].append(cells[0].text)
-        result['Security_Code'].append(cells[1].text)
-        result['Security_Name'].append(cells[2].text)
-        result['Client_Name'].append(cells[3].text)
-        result['Deal_Type'].append(cells[4].text)
-        result['Quantity'].append(cells[5].text)
-        result['Price'].append(cells[6].text)
+soup = BeautifulSoup(res.text, 'html.parser')
+table = soup.find('table', {'id': 'ContentPlaceHolder1_gvbulk_deals'})
+rows = table.find_all('tr')[1:]
+
+# Iterate over each row and extract the data
+for row in rows:
+    cells = row.find_all('td')
+    result['Deal_Date'].append(cells[0].text)
+    result['Security_Code'].append(cells[1].text)
+    result['Security_Name'].append(cells[2].text)
+    result['Client_Name'].append(cells[3].text)
+    result['Deal_Type'].append(cells[4].text)
+    result['Quantity'].append(cells[5].text)
+    result['Price'].append(cells[6].text)
 
 # create a dataframe to store data and then pushhing it to the daily_run_data table
 df = pd.DataFrame.from_dict(result)
